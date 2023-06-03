@@ -23,8 +23,7 @@
             <th>Delete</th>
         </tr>
         <tr th:each="user : ${users}">
-            <td th:text="${user.getId()}"/>
-            <!--      <td><a th:href="@{/user/{id}(id=${user.getId()})}" th:text="${user.getId()}"/></td>-->
+            <td><a th:href="@{/admin/user/{id}(id=${user.getId()})}" th:text="${user.getId()}"/></td>
             <td th:text="${user.getName()}"/>
             <td th:text="${user.getLastName()}"/>
             <td th:text="${user.getAge()}"/>

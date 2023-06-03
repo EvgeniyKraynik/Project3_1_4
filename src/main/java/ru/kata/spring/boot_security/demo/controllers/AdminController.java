@@ -67,4 +67,10 @@ public class AdminController {
         userService.removeUser(id);
         return "redirect:/admin/users";
     }
+
+    @GetMapping("/user/{id}")
+    public String showUserById(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.getUser(id));
+        return "show";
+    }
 }
