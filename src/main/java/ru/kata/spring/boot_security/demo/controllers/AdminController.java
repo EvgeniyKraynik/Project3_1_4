@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 
@@ -16,12 +16,12 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 public class AdminController {
 
     private final UserService userService;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService, RoleRepository roleRepository) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @GetMapping()
@@ -39,7 +39,7 @@ public class AdminController {
     public ModelAndView showPageToCreateNewUser() {
         ModelAndView mav = new ModelAndView("new");
         mav.addObject("user", new User());
-        mav.addObject("allRoles", roleRepository.findAll());
+        mav.addObject("allRoles", roleService.getAllRoles());
         return mav;
     }
 
@@ -52,7 +52,7 @@ public class AdminController {
     @GetMapping("/user/{id}/edit")
     public String editUserData(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "edit";
     }
 
