@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -46,18 +44,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User updatedUser) {
-        updatedUser.setPassword((passwordEncoder.encode((updatedUser.getPassword()))));
+        if (!updatedUser.getPassword().equals(getUser(updatedUser.getId()).getPassword())) {
+            updatedUser.setPassword((passwordEncoder.encode((updatedUser.getPassword()))));
+        }
         userRepository.save(updatedUser);
     }
 
     @Override
-    public void removeUser(int id) {
-        userRepository.deleteById((long) id);
+    public void removeUser(long id) {
+        userRepository.deleteById(id);
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findUserByUsername(String email) {
+        return userRepository.findByUsername(email);
     }
-
 }
